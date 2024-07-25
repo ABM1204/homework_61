@@ -1,11 +1,12 @@
+<!-- templates/accounts/login.html -->
 {% extends "base.html" %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div>
-    <div>
-        <h1>Login</h1>
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Login</h1>
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
@@ -16,7 +17,7 @@
                 <label for="id_password">Password:</label>
                 <input type="password" name="password" class="form-control" id="id_password" required>
             </div>
-            <button>Login</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
     </div>
 </div>
