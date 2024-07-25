@@ -2,12 +2,13 @@ from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, UpdateView, DetailView, DeleteView, CreateView, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from to_do_list.forms import TaskForm, ProjectForm
 from to_do_list.models import Task, Project
 
 
-class TaskAddView(CreateView):
+class TaskAddView(LoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
     template_name = 'partial/task_form.html'
@@ -32,7 +33,7 @@ class TaskDetailView(DetailView):
         return task
 
 
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(LoginRequiredMixin, UpdateView):
     model = Task
     form_class = TaskForm
     template_name = 'partial/task_form.html'
@@ -41,7 +42,7 @@ class TaskUpdateView(UpdateView):
         return reverse_lazy('project_detail', kwargs={'pk': self.object.project.pk})
 
 
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     template_name = 'task_delete.html'
 
@@ -64,8 +65,8 @@ class ProjectListView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
-            return Project.objects.filter(name__icontains=query) | Project.objects.filter(description__icontains=query)
-        return Project.objects.all()
+            return Project.objects.filter(name__icontains=query) | Project.objects.filter(description__icontains=query).order_by('name')
+        return Project.objects.all().order_by('name')
 
 
 class ProjectDetailView(DetailView):
@@ -79,21 +80,21 @@ class ProjectDetailView(DetailView):
         return context
 
 
-class ProjectCreateView(CreateView):
+class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     form_class = ProjectForm
     template_name = 'partial/project_form.html'
     success_url = reverse_lazy('project_list')
 
 
-class ProjectUpdateView(UpdateView):
+class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     model = Project
     form_class = ProjectForm
     template_name = 'partial/project_form.html'
     success_url = reverse_lazy('project_list')
 
 
-class ProjectDeleteView(DeleteView):
+class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     model = Project
     template_name = 'project_delete.html'
     success_url = reverse_lazy('project_list')

@@ -14,6 +14,7 @@ class Project(models.Model):
         db_table = 'projects'
         verbose_name = 'project'
         verbose_name_plural = 'projects'
+        ordering = ['name']
 
 class Type(models.Model):
     name = models.CharField(max_length=100, default='Task', verbose_name='Type')
