@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Task Detail{% endblock %}
+
+{% block content %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h1 class="card-title">Task Detail</h1>
+            <p class="card-text"><strong>Summary:</strong> {{ task.summary }}</p>
+            <p class="card-text"><strong>Description:</strong> {{ task.description }}</p>
+            <p class="card-text"><strong>Type:</strong> {{ task.type }}</p>
+            <p class="card-text"><strong>Status:</strong> {{ task.status }}</p>
+            <a href="{% url 'project_detail' task.project.pk %}" class="btn btn-secondary">Back to Project</a>
+            <a href="{% url 'task_edit' task.pk %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+{% endblock %}
